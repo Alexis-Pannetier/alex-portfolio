@@ -1,0 +1,49 @@
+---
+import { hardSkills, skillCategories } from "@/data/skillCategories";
+import CustomSkillCard from "./CustomSkillCard";
+import CustomSkill from "./CustomSkill";
+import languages from "../data/languages.ts";
+import LanguageCard from "./LanguageCard.astro";
+---
+
+<div class="relative flex flex-col gap-8 text-n700 dark:text-n200 w-full mt-10 px-4">
+  {hardSkills.map((category) => (
+    <div class="mb-2">
+      <h2 class="text-3xl font-bold mb-4 text-center text-primary-dark">{category.title}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {category.skills.map((skill) => (
+          <CustomSkill
+            name={skill.name}
+            description={skill.description}
+            iconKey={skill.icon}
+          />
+        ))}
+      </div>
+    </div>
+  ))}
+
+  {skillCategories.map((category) => (
+    <div class="mb-4">
+      <h2 class="text-3xl font-bold mb-4 text-center text-primary-dark">{category.title}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {category.skills.map((skill) => (
+          <CustomSkillCard
+            name={skill.name}
+            description={skill.description}
+            iconKey={skill.icon}
+          />
+        ))}
+      </div>
+    </div>
+  ))}
+
+  {/* Languages */}
+  <div class="mb-4">
+    <h2 class="text-2xl font-bold mb-4 text-center text-primary-dark">Languages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {languages.filter((l) => l.show).map((lang) => (
+        <LanguageCard name={lang.name} level={lang.level} description={lang.description} />
+      ))}
+    </div>
+  </div>
+</div>

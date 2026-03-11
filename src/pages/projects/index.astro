@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCardList from "@/components/ProjectCardList.astro";
+import Layout from "../../layouts/Layout.astro";
+
+interface Project {
+	id: string;
+	data: {
+		title: string;
+		summary: string;
+		tags: string[];
+		cover: ImageMetadata;
+		startDate: Date;
+	};
+}
+
+const allProjects = (await getCollection("projects")).sort(
+	(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
+);
+---
+
+<Layout
+	title="Alexis Pannetier | Portfolio | Mes projets"
+	description="Une selection de mes projets"
+	scrollSmooth={false}
+>
+	<>
+		<!-- Section Projets -->
+		<section class="border-bottom">
+			<div class="mb-4">
+				<h2 class="text-3xl font-bold mb-8">Tous mes projets</h2>
+			</div>
+		</section>
+		<!-- Liste des projets -->
+		<section class="flex flex-col gap-8">
+			{
+				allProjects.length > 0 ? (
+					allProjects.map((project: Project) => (
+						<ProjectCardList
+							id={project.id}
+							title={project.data.title}
+							tags={project.data.tags}
+							cover={project.data.cover}
+						/>
+					))
+				) : (
+					<p>Aucun projet trouvé.</p>
+				)
+			}
+		</section>
+	</>
+</Layout>
