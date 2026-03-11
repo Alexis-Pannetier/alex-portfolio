@@ -1,0 +1,58 @@
+---
+import { formatDatetime } from "../lib/utils";
+import { Badge } from "./ui/badge";
+import type { Education } from "../data/education";
+
+const { eduData } = Astro.props;
+const { title, school, location, startDate, endDate, description, detail, website, currentUni } =
+  eduData as Education;
+---
+
+<div class="flex flex-col gap-2">
+
+  {/* Date */}
+  <div class="flex flex-wrap gap-2 items-center">
+    <Badge className="bg-primary-light dark:bg-primary-dark w-fit rounded-md">
+      {formatDatetime(startDate)} — {
+        currentUni || !endDate ? "Aujourd'hui" : formatDatetime(endDate)
+      }
+    </Badge>
+  </div>
+
+  {/* Title */}
+  <h3 class="text-xl font-bold">{title}</h3>
+
+  {/* Institute + Location in one line */}
+  <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-teal-600 dark:text-teal-400">
+    {website ? (
+      <a href={website} target="_blank" rel="noopener noreferrer"
+        class="hover:underline underline-offset-2">
+        {school}
+      </a>
+    ) : (
+      <span>{school}</span>
+    )}
+    <span class="text-teal-400 dark:text-teal-600">·</span>
+    <span class="flex items-center gap-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+      </svg>
+      {location}
+    </span>
+  </div>
+
+  {/* Description */}
+  <p class="text-sm">{description}</p>
+
+  {/* detail toggle */}
+  {detail && (
+    <div class="group text-sm">
+      {detail.url && (
+        <a href={detail.url} target="_blank" rel="noopener noreferrer" class="text-sm text-blue-500 hover:underline">
+          {detail.title}
+        </a>
+      )}
+    </div>
+  )}
+
+</div>

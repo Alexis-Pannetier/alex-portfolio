@@ -1,0 +1,33 @@
+---
+import Skills from "@/components/Skills.astro";
+import Projects from "@/components/Projects.astro";
+import AboutMeCC from "../components/AboutMeCC.astro";
+import ProfileActionButton from "../components/ProfileActionButton.astro";
+import ProfileFacts from "../components/ProfileFacts.astro";
+import ProfileInfo from "../components/ProfileInfo.astro";
+import TabsButtons from "../components/TabsButtons.tsx";
+import Layout from "../layouts/Layout.astro";
+
+const tabs = [
+	{ value: "about", label: "Profil" },
+	// { value: "projects", label: "Projets" },
+	{ value: "skills", label: "Compétences" },
+] as const;
+---
+
+<Layout
+	title="Alexis Pannetier | Portfolio"
+	description="A simple resume & portfolio"
+	scrollSmooth={false}
+>
+	<>
+		<ProfileInfo />
+		<ProfileFacts />
+		<ProfileActionButton />
+		<TabsButtons client:idle tabs={tabs}>
+			<AboutMeCC slot="about" />
+			<Projects slot="projects" />
+			<Skills slot="skills" />
+		</TabsButtons>
+	</>
+</Layout>
