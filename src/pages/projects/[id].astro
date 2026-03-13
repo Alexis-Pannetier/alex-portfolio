@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import BackBtn from "@/components/BackBtn.astro";
 import BackToTop from "../../components/BackToTop.astro";
 import Layout from "../../layouts/Layout.astro";
@@ -17,6 +18,8 @@ const { post } = Astro.props;
 const { title, summary, tags, cover, ogImage, url } = post.data;
 
 const { Content } = await render(post);
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout
@@ -39,12 +42,12 @@ const { Content } = await render(post);
 			transition:name={`${post.id}-image`}
 			class="rounded-2xl"
 			src={cover}
-			alt="Image principale"
+			alt={t("projects.detail.imageAlt")}
 		/>
 		<p>
 			{summary}
 		</p>
-		<a href={url}>Voir le projet ↗</a>
+		<a href={url}>{t("projects.detail.viewProject")} ↗</a>
 
 		<article id="article" class="mt-8 prose dark:prose-invert">
 			<Content />

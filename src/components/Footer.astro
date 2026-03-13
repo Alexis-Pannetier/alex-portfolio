@@ -1,10 +1,13 @@
 ---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <footer class="container py-4 text-center">
 	<p>
-		Made with ❤️ by <a
+		{t("footer.madeWith")} ❤️ {t("footer.by")} <a
 			href="https://github.com/Alexis-Pannetier"
 			target="_blank"
 			rel="noopener noreferrer">Alexis Pannetier</a

@@ -1,18 +1,27 @@
 ---
-import { ME, COLORS } from "@/config";
+import { COLORS, getMeConfig } from "@/config";
+import { getLangFromUrl } from "@/i18n/utils";
 import workExperience from "@/data/Jobs";
-const { profileFacts } = ME;
+const lang = getLangFromUrl(Astro.url);
+const { profileFacts } = getMeConfig(lang);
 
 const completedMissionsCount = workExperience.filter((job) => !job.currentJob).length;
 
 const getFactValue = (fact: (typeof profileFacts)[number]) => {
-  if (typeof fact.start === "number") {
+  if ("start" in fact && typeof fact.start === "number") {
     return new Date().getFullYear() - fact.start;
   }
 
   if (fact.description.toLowerCase()) {
     return completedMissionsCount;
   }
+};
+
+const getFactColor = (fact: (typeof profileFacts)[number]) => {
+	if ("color" in fact && fact.color === "secondary") {
+		return COLORS.secondary;
+	}
+	return COLORS.primary;
 };
 ---
 
@@ -25,7 +34,7 @@ const getFactValue = (fact: (typeof profileFacts)[number]) => {
         {getFactValue(fact)}
       </h3>
       <p class="text-md text-n500 dark:text-n200">
-        <span style={`color: ${fact.color === "secondary" ? COLORS.secondary : COLORS.primary}`}>
+		<span style={`color: ${getFactColor(fact)}`}>
           {fact.description}
         </span>
       </p>

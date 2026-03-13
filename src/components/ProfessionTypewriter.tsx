@@ -1,23 +1,38 @@
-import { SITE, COLORS } from "@/config";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import { COLORS } from "@/config";
+
+type DisplayWord = {
+  text: string;
+  color: "primary" | "secondary";
+};
+
+type ProfessionTypewriterProps = {
+  prefix: string;
+  displayWords: readonly DisplayWord[];
+};
 
 const TYPE_SPEED  = 60;
 const DELETE_SPEED = 35;
 const HOLD_AFTER_TYPE   = 1800;
 const HOLD_AFTER_DELETE = 400;
 
-export default function ProfessionTypewriter() {
+export default function ProfessionTypewriter({ prefix, displayWords }: ProfessionTypewriterProps) {
   const [index, setIndex]   = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [phase, setPhase]   = useState<"typing" | "holding" | "deleting" | "waiting">("typing");
 
-  const current = SITE.display[index];
+  const current = displayWords[index] ?? displayWords[0];
 
   const getColor = (colorType: string) => {
     return colorType === "primary" ? COLORS.primary : COLORS.secondary;
   };
 
   useEffect(() => {
+	if (!current) {
+		return;
+	}
+
     let timer: ReturnType<typeof setTimeout>;
 
     if (phase === "typing") {
@@ -33,18 +48,22 @@ export default function ProfessionTypewriter() {
         timer = setTimeout(() => setDisplayed(displayed.slice(0, -1)), DELETE_SPEED);
       } else {
         timer = setTimeout(() => {
-          setIndex((i) => (i + 1) % SITE.display.length);
+		  setIndex((i) => (i + 1) % displayWords.length);
           setPhase("typing");
         }, HOLD_AFTER_DELETE);
       }
     }
 
     return () => clearTimeout(timer);
-  }, [phase, displayed, current]);
+  }, [phase, displayed, current, displayWords.length]);
+
+	if (!current) {
+		return null;
+	}
 
   return (
     <p className="text-sm text-n500 dark:text-n200 h-5">
-      Développeur {" "}
+	  {prefix} {" "}
       <span style={{ color: getColor(current.color), fontWeight: 600 }}>
         {displayed}
       </span>

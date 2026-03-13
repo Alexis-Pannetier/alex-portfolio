@@ -1,25 +1,29 @@
 ---
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 import Layout from "../layouts/Layout.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout
-	title={`404 Introuvable |`}
-	description="La page que vous recherchez est introuvable. Verifiez l'URL ou revenez a l'accueil."
+	title={t("404.title")}
+	description={t("404.description")}
 	scrollSmooth={false}
 >
 	<>
 		<div class="not-found-wrapper">
-			<span aria-hidden="true" role="img" aria-label="Shrug Emoji"
+			<span aria-hidden="true" role="img" aria-label={t("404.shrugAria")}
 				>¯\_(ツ)_/¯</span
 			>
 			<h1>404</h1>
-			<p>Page introuvable</p>
+			<p>{t("404.heading")}</p>
 			<a
-				href="/"
+				href={localizePath("/", lang)}
 				class="my-6 text-lg underline decoration-dashed underline-offset-8"
-				aria-label="retour a l'accueil"
+				aria-label={t("404.backAria")}
 			>
-				Retour a l'accueil
+				{t("404.back")}
 			</a>
 		</div>
 	</>

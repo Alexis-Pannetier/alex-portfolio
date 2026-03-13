@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import ProjectCardList from "@/components/ProjectCardList.astro";
 import Layout from "../../layouts/Layout.astro";
 
@@ -17,18 +18,21 @@ interface Project {
 const allProjects = (await getCollection("projects")).sort(
 	(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
 );
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout
-	title="Alexis Pannetier | Portfolio | Mes projets"
-	description="Une selection de mes projets"
+	title={t("projects.index.title")}
+	description={t("projects.index.description")}
 	scrollSmooth={false}
 >
 	<>
 		<!-- Section Projets -->
 		<section class="border-bottom">
 			<div class="mb-4">
-				<h2 class="text-3xl font-bold mb-8">Tous mes projets</h2>
+				<h2 class="text-3xl font-bold mb-8">{t("projects.index.heading")}</h2>
 			</div>
 		</section>
 		<!-- Liste des projets -->
@@ -44,7 +48,7 @@ const allProjects = (await getCollection("projects")).sort(
 						/>
 					))
 				) : (
-					<p>Aucun projet trouvé.</p>
+					<p>{t("projects.index.empty")}</p>
 				)
 			}
 		</section>

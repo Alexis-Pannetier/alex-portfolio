@@ -17,6 +17,12 @@ export function cn(...inputs: ClassValue[]) {
  * @param {string | number | Date} datetime - The datetime value to be formatted.
  * @returns {string} - A string representing the formatted date in 'en-US' locale, displaying the year and short month.
  */
+export function parseAboutMeTokens(text: string): string {
+	return text.replace(/\[\[(primary|secondary):([^\]]+)\]\]/g, (_, token, content) => {
+		return `<span class="highlight-${token}">${content}</span>`;
+	});
+}
+
 export const formatDatetime = (datetime: string | number | Date) => {
 	const d = new Date(datetime);
 	return d.toLocaleDateString("en-US", {

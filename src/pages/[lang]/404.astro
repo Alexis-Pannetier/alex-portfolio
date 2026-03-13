@@ -1,0 +1,12 @@
+---
+import { prefixedLocales } from "@/i18n/ui";
+import Shared404Page from "../404.astro";
+
+export function getStaticPaths() {
+	return prefixedLocales.map((lang) => ({
+		params: { lang },
+	}));
+}
+---
+
+<Shared404Page />

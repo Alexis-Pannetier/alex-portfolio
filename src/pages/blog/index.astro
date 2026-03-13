@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import PostCard from "../../components/PostCard.astro";
 import Layout from "../../layouts/Layout.astro";
 
@@ -20,18 +21,21 @@ interface Post {
 const allPost = (await getCollection("posts")).sort(
 	(a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
 );
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <Layout
-	title="Alexis Pannetier | Portfolio | Blog"
-	description="Mes articles et notes techniques"
+	title={t("blog.index.title")}
+	description={t("blog.index.description")}
 	scrollSmooth={false}
 >
 	<>
 		<!-- Section Blog -->
 		<section class="border-bottom">
 			<div class="mb-4">
-				<h2 class="text-3xl font-bold mb-8">Tous mes articles</h2>
+				<h2 class="text-3xl font-bold mb-8">{t("blog.index.heading")}</h2>
 			</div>
 		</section>
 
@@ -49,7 +53,7 @@ const allPost = (await getCollection("posts")).sort(
 						/>
 					))
 				) : (
-					<p>Aucun article trouve.</p>
+					<p>{t("blog.index.empty")}</p>
 				)
 			}
 		</section>

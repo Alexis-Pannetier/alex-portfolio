@@ -1,10 +1,12 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { cn } from "../lib/utils";
+import { getLangFromUrl } from "@/i18n/utils";
 import "@/styles/globals.css";
 
-import { SITE } from "@/config";
+import { getSiteConfig } from "@/config";
 import Footer from "../components/Footer.astro";
+import LocaleSwitcher from "../components/LocaleSwitcher.astro";
 import Navbar from "../components/Navbar.astro";
 
 interface Props {
@@ -17,19 +19,22 @@ interface Props {
 	canonicalURL?: string;
 }
 
+const lang = getLangFromUrl(Astro.url);
+const site = getSiteConfig(lang);
+
 const {
-	title = SITE.title,
-	description = SITE.description,
-	tags = SITE.tags,
-	author = SITE.author,
+	title = site.title,
+	description = site.description,
+	tags = site.tags,
+	author = site.author,
 	scrollSmooth,
 	canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
-	imageOg = SITE.ogImage,
+	imageOg = site.ogImage,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={SITE.lang ?? "en"} class={cn({ "scroll-smooth": scrollSmooth })}>
+<html lang={lang} class={cn({ "scroll-smooth": scrollSmooth })}>
 	<head>
 		<meta name="msapplication-TileColor" content="#000000" />
 		<meta name="viewport" content="width=device-width" />
@@ -41,7 +46,7 @@ const {
 		<meta name="keywords" content={tags.join(", ")} />
 		<meta name="author" content={author} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
-		<link rel="icon" href={SITE.favicon} />
+		<link rel="icon" href={site.favicon} />
 		<link rel="canonical" href={canonicalURL} />
 
 		<!-- Open Graph / Facebook -->
@@ -63,7 +68,12 @@ const {
 		class="bg-light-theme dark:bg-dark-theme antialiased text-n700 dark:text-light-theme w-full h-screen flex flex-col"
 	>
 		<!-- <Navbar/> -->
-		<main class="container py-12 flex gap-8 flex-col" role="main" id="top">
+    <nav
+      class="container pt-4 flex items-center justify-end gap-2 text-sm"
+    >
+      <LocaleSwitcher />
+    </nav>
+    <main class="container py-12 flex gap-8 flex-col" role="main" id="top">
 			<slot />
 		</main>
 		<Footer />

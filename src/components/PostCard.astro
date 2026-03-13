@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import ClockIcon from "@/icons/time-line.svg";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 
 interface Props {
 	id: string;
@@ -27,11 +28,14 @@ const post = {
 		cover,
 	},
 };
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <a
-	href=`/blog/${id}`
-	aria-label={`Lire l'article ${title}`}
+	href={localizePath(`/blog/${id}`, lang)}
+	aria-label={`${t("post.readAria")} ${title}`}
 	class="flex flex-col md:flex-row md:items-center gap-4"
 >
 	<!--post cover-->

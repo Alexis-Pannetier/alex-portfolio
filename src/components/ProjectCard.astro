@@ -1,11 +1,14 @@
 ---
 // astro imports
 import { Image } from "astro:assets";
+import { getLangFromUrl, localizePath, useTranslations } from "@/i18n/utils";
 
 const { title, tags, cover, id } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<a href={`/projects/${id}`}>
+<a href={localizePath(`/projects/${id}`, lang)}>
 	<div
 		class="relative flex flex-col text-gray-700 bg-clip-border rounded-xl w-full"
 	>
@@ -13,7 +16,7 @@ const { title, tags, cover, id } = Astro.props;
 			<Image
 				transition:name={`${id}-image`}
 				src={cover}
-				alt={"cover preview of " + title}
+				alt={`${t("project.coverAlt")} ${title}`}
 				class={"object-cover w-full h-full rounded-xl"}
 				loading={"eager"}
 			/>

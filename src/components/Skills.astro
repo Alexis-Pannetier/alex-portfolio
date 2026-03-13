@@ -1,9 +1,16 @@
 ---
-import { hardSkills, skillCategories } from "@/data/skillCategories";
+import { getHardSkills, getSkillCategories } from "@/data/skillCategories";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import CustomSkillCard from "./CustomSkillCard";
 import CustomSkill from "./CustomSkill";
-import languages from "../data/languages.ts";
+import { getLanguages } from "@/data/languages";
 import LanguageCard from "./LanguageCard.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const hardSkills = getHardSkills(lang);
+const skillCategories = getSkillCategories(lang);
+const languages = getLanguages(lang);
 ---
 
 <div class="relative flex flex-col gap-8 text-n700 dark:text-n200 w-full mt-10 px-4">
@@ -39,7 +46,7 @@ import LanguageCard from "./LanguageCard.astro";
 
   {/* Languages */}
   <div class="mb-4">
-    <h2 class="text-2xl font-bold mb-4 text-center text-primary-dark">Languages</h2>
+    <h2 class="text-2xl font-bold mb-4 text-center text-primary-dark">{t("skills.languages")}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       {languages.filter((l) => l.show).map((lang) => (
         <LanguageCard name={lang.name} level={lang.level} description={lang.description} />

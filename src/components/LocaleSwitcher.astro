@@ -1,0 +1,50 @@
+---
+import { defaultLang, locales, type Lang } from "@/i18n/ui";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const locale = getLangFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const buildHref = (targetLocale: Lang) => {
+	const segments = Astro.url.pathname.split("/").filter(Boolean);
+
+	if (segments.length > 0 && locales.includes(segments[0] as Lang)) {
+		if (targetLocale === defaultLang) {
+			segments.shift();
+		} else {
+			segments[0] = targetLocale;
+		}
+	} else if (targetLocale !== defaultLang) {
+		segments.unshift(targetLocale);
+	}
+
+	const path = `/${segments.join("/")}`;
+	const normalizedPath = path === "/" ? "/" : `${path}/`;
+	return `${normalizedPath}${Astro.url.search}${Astro.url.hash}`;
+};
+
+const getLocaleLabelKey = (item: Lang) => {
+	if (item === "en") {
+		return "home.switch.en";
+	}
+
+	return "home.switch.fr";
+};
+---
+
+<>
+	{
+		locales.map((item) => (
+			<a
+				href={buildHref(item)}
+				class:list={{
+					"px-2 py-1 rounded-md transition-colors": true,
+					"bg-primary-light text-n900 dark:bg-primary-dark dark:text-n900": locale === item,
+					"text-n600 hover:text-n900 dark:text-n200 dark:hover:text-white": locale !== item,
+				}}
+			>
+				{t(getLocaleLabelKey(item))}
+			</a>
+		))
+	}
+</>

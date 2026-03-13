@@ -1,5 +1,6 @@
 ---
 import { formatDatetime } from "../lib/utils";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import { Badge } from "./ui/badge";
 import type { WorkExperience } from "../data/Jobs";
 
@@ -7,6 +8,8 @@ const { jobData } = Astro.props;
 const { title, company, location, startDate, endDate, description, goals, currentJob, website } =
   jobData as WorkExperience;
 const goalsList = goals ?? [];
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="flex flex-col gap-2">
@@ -14,7 +17,7 @@ const goalsList = goals ?? [];
   {/* Date */}
   <div class="flex flex-wrap gap-2 items-center">
     <Badge className="bg-primary-light dark:bg-primary-dark w-fit rounded-md whitespace-nowrap">
-      {formatDatetime(startDate)} — {currentJob ? "Aujourd'hui" : endDate ? formatDatetime(endDate) : "N/A"}
+	  {formatDatetime(startDate)} — {currentJob ? t("common.today") : endDate ? formatDatetime(endDate) : t("common.na")}
     </Badge>
   </div>
 
@@ -50,7 +53,7 @@ const goalsList = goals ?? [];
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transition-transform group-open:rotate-90 shrink-0" viewBox="0 0 24 24" fill="currentColor">
           <path d="M8 5v14l11-7z"/>
         </svg>
-        Réalisations
+        {t("job.achievements")}
       </summary>
       <ul class="mt-2 pl-5 flex flex-col gap-1 list-disc text-n700 dark:text-n200">
         {goalsList.map((goal: string) => <li>{goal}</li>)}

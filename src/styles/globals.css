@@ -4,7 +4,19 @@
 @layer base {
 	:root {
 		--radius: 0.5rem;
+		--color-primary: #fae081;
+		--color-secondary: #62c4c3;
 	}
+}
+
+.highlight-primary {
+	color: var(--color-primary);
+	font-weight: 600;
+}
+
+.highlight-secondary {
+	color: var(--color-secondary);
+	font-weight: 600;
 }
 
 main {

@@ -1,18 +1,22 @@
 ---
 // astro imports
 import { getCollection } from "astro:content";
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 // components imports
 import ProjectCard from "./ProjectCard.astro";
 
 const allProjects = (await getCollection("projects")).sort(
 	(a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
 );
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <>
 	<section class="mt-10 px-4 w-full">
 		<div class="mb-4">
-			<h2 class="text-3xl font-bold mb-4 text-center text-primary-dark">Projets</h2>
+			<h2 class="text-3xl font-bold mb-4 text-center text-primary-dark">{t("projects.heading")}</h2>
 		</div>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 			{

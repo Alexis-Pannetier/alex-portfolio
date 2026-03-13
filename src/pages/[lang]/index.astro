@@ -1,0 +1,12 @@
+---
+import { prefixedLocales } from "@/i18n/ui";
+import SharedIndexPage from "../index.astro";
+
+export function getStaticPaths() {
+	return prefixedLocales.map((lang) => ({
+		params: { lang },
+	}));
+}
+---
+
+<SharedIndexPage />
